@@ -9,7 +9,7 @@ var main_action = ACTIONS.walk_to
 var secondary_action = ACTIONS.examine
 
 # Position in space where the player will stand to interact
-onready var position = self.transform.origin
+onready var interaction_position = self.transform.origin
 
 # Thumbnail for takeable items
 onready var thumbnail = "res://addons/Point_and_Click/scripts/Interactive/default.png"
@@ -27,7 +27,19 @@ func examine(who):
 	return who.say(description)
 
 func use_item(who:Interactive, item):
-	who.say("I don't know how to combine " + self.oname + " with " + item.oname)
+	who.say("I don't know how to use " + self.oname + " with " + item.oname)
 
 func walk_to(who):
 	who.approach(self)
+
+func take(who):
+	who.approach(self)
+	who.face_object(self)
+	who.animate_until_finished("raise_hand")
+	who.call_function_from(self, "grab")
+	who.add_to_inventory(self)
+	who.animate_until_finished("lower_hand")
+
+func grab():
+	visible = false
+	interactive = false

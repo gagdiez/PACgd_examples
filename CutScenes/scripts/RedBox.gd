@@ -5,7 +5,7 @@ func _ready():
 	main_action = ACTIONS.take
 
 	# We have to stand a couple of pixels away from it to interact
-	position = self.transform.origin + Vector3(3, 0, 0)
+	interaction_position = self.transform.origin + Vector3(3, 0, 0)
 
 	# Description and Thumbnail
 	description = "I think that's the box I have to move"
@@ -16,9 +16,8 @@ func take(who):
 	# We get Cole close, make him "grab" the box, and add it to his inventory
 	who.say("Lets grab the box")
 	who.approach(self)
-	who.face_object(self)
 	who.animate_until_finished("raise_hand")
-	who.interact(self, "grab")
+	who.call_function_from(self, "grab")
 	who.add_to_inventory(self)
 	who.animate_until_finished("lower_hand")
 
@@ -28,16 +27,15 @@ func grab():
 	interactive = false
 	description = "The red box I took before"
 
-func use_item(who, what):
-	# Function executed when <WHO> uses <WHAT> on THIS RED BOX
-	# In this particular game we know that <WHAT> will be the GREEN BOX since
+func use_item(who, item):
+	# Function executed when <WHO> uses <ITEM> on THIS RED BOX
+	# In this particular game we know that <ITEM> will be the GREEN BOX since
 	
 	# Cole will approach, and place the green box on top of it
 	who.approach(self)
-	who.face_object(self)
 	who.animate_until_finished("raise_hand")
-	who.remove_from_inventory(what)
-	who.interact(self, "place_box", [what])
+	who.remove_from_inventory(item)
+	who.call_function_from(self, "place_box", [item])
 	who.animate_until_finished("lower_hand")
 	who.say("That's it, now you can check the code!")
 	who.say("Thanks for being interested in our work")

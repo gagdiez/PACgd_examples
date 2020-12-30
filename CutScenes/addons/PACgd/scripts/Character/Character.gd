@@ -1,5 +1,5 @@
 extends Interactive
-class_name Player
+class_name Character
 
 # A player is basically a queue of actions that is constantly running
 const STATES = preload("States.gd")
@@ -25,10 +25,24 @@ var MINIMUM_WALKABLE_DISTANCE = 0.5
 signal player_finished
 signal message(signal_name)
 
+var doing = false
+
 # Godot functions
 func _ready():
 	main_action = ACTIONS.talk_to
 	inventory = Inventory.new()
+
+	# For a player, we need to indicate its "Animation Player"
+	animation_player = $Animations
+
+	# Its talk bubble
+	talk_bubble = $"Talk Bubble"
+	talk_bubble.visible = false
+
+	talk_bubble_timer = $"Talk Bubble/Timer"
+
+	# And where to place it
+	talk_bubble_offset = Vector3(-.6, 9.5, 0)
 
 func _physics_process(_delta):
 	# Move player's bubble above they head
@@ -40,7 +54,12 @@ func _physics_process(_delta):
 	var current_action = queue.current()
 
 	if current_action:
+		doing = true
 		current_action.run()
+	else:
+		if doing:
+			doing = false
+			emit_signal("player_finished")
 
 # Functions to modify the graphics
 func face_direction(direction):
@@ -84,7 +103,7 @@ func interrupt():
 	if queue.clear():
 		play_animation("idle")
 
-func interact(object, function, params=[]):
+func call_function_from(object, function, params=[]):
 	if not params is Array:
 		printerr("parameters should be an array")
 		return
@@ -100,11 +119,11 @@ func talk_to(someone):
 	var to_say = someone.name + " is trying to talk with me"
 	queue.append(STATES.Say.new(self, to_say, talk_bubble, talk_bubble_timer))
 
-func wait_on_player(who:Player, message:String):
+func wait_on_player(who:Character, message:String):
 	queue.append(STATES.WaitOnPlayer.new(self, who, message))
 
 func approach(object):
-	var end = navigation.get_closest_point(object.position)
+	var end = navigation.get_closest_point(object.interaction_position)
 
 	if (end - transform.origin).length() > MINIMUM_WALKABLE_DISTANCE:
 		# We actually need to walk
@@ -113,4 +132,5 @@ func approach(object):
 
 		queue.append(STATES.Animate.new(self, "walk"))
 		queue.append(STATES.WalkPath.new(self, path))
+		queue.append(STATES.FaceObject.new(self, object))
 		queue.append(STATES.Animate.new(self, "idle"))
