@@ -17,10 +17,10 @@ func _ready():
 	# - If you are going to play cutscenes, you need to define the dictionary
 	#   that transforms text in the cutscene to objects in the game
 	var name_to_object = {"cole": $Cole,
-						  "white_box": $"Boxes/White Box",
-						  "red_box": $"Boxes/Red Box",
-						  "green_box":$"Boxes/Green Box"}
+						  "white_box": $"White Box",
+						  "red_box": $"Red Box",
+						  "green_box":$"Green Box"}
 	$PointClick.init($Cole, name_to_object)
 	
 	# When the game starts, we play the intro CutScene
-	#$PointClick.play_scene("res://cutscenes/Intro.txt")
+	$PointClick.play_scene("res://cutscenes/Intro.txt")

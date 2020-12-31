@@ -14,16 +14,16 @@ cole say: Do you have any questions?
 
 choice: Do you have any questions?
 	option: How can I learn more about the framework? 
-		cole say: The documentation will be available soon!
-		cole say: Any other question?
+		cole say: Check the documentation!
+		cole say: Also, did you know that you can make multiple choices?
 		
-		choice: Other question?
-			option: option A
-				cole say: you choose A
-			option: B	if: cole.name != "Cole"
-				cole say: you choose B
-			option: C
-				cole say: you choose C
+		choice: Did you know?
+			option: I did not
+				cole say: Really?
+			option: I changed your name	if: cole.name != "Cole"
+				cole say: I see you did
+			option: I knew it!
+				cole say: Perfect
 				finish
 
 	option: What am I supposed to do here? if: cole.name == "Cole"
