@@ -1,0 +1,17 @@
+cole say: Hi, welcome to this example on how to use our plugin
+
+cole say: My name is {cole.name}
+
+shadow_cole say: And my name is {shadow_cole.name}
+
+cole say: Do you have any questions?
+
+choice: Do you have any questions?
+	option: What am I supposed to do here?
+		cole say: Interact with the boxes, put the red on top of the white one
+		shadow_cole say: And then give me the green box please
+		cole say: Any other question?
+	option: No, thanks!
+		cole say: Perfect! Now you can play
+		cole say: Don't forget to check the code later
+		finish
