@@ -46,8 +46,7 @@ func use_item(who, item):
 	self.animate_until_finished("lower_hand")
 
 	self.say("Thanks")
-	#Call red_box.use_item(who, item) so it populates the queue of Shadow Cole
-	$"../Red Box".use_item(self, item)
+	$"../Red Box".use_item(self, item) #-> it populates the queue of Shadow Cole
 	self.emit_message("box_placed")
 
 	# Cole waits and says thank you
