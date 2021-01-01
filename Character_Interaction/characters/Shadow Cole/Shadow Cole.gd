@@ -5,52 +5,60 @@ var placed_box
 func _ready():
 	._ready()
 
+	# By default the main_action of a Character is "ACTIONS.talk_to"
+	description = "It is me, but in black and white... lazy developers"
 	interaction_position = self.transform.origin - Vector3(5, 0, 0)
+	
+	# Make it look at Shadow Cole
+	face_object($'../Cole')
 
 func talk_to(who):
-	who.approach(self)
-	who.emit_message("arrived")
-	
-	self.wait_on_player(who, "arrived")
+	# Called when main_action is invoqued by the click
+	self.wait_on_character(who, "arrived")
 	self.face_object(who)
 	self.say("Hi " + who.name)
 
-func use_item(who, item):
-	
 	who.approach(self)
 	who.emit_message("arrived")
-	
-	self.wait_on_player(who, "arrived")
+
+func use_item(who, item):
+	# Called when <WHO> uses <ITEM> on me
+	# Cole approaches Shadow Cole
+	who.approach(self)
+	who.emit_message("arrived")
+
+	# Shadow Cole waits until Cole arrives and looks at him
+	self.wait_on_character(who, "arrived")
 	self.face_object(who)
-	
+
 	if item != $"../Green Box":
 		self.say("No, please give me the green box")
 		return
-	
+
+	# Cole moves hand and remove from inventory
 	who.animate_until_finished("raise_hand")
 	who.remove_from_inventory(item)
 	who.animate_until_finished("lower_hand")
-	who.emit_message("gave_item")
-	
-	self.wait_on_player(who, "gave_item")
-	self.say("Thanks")
-	self.approach($"../Red Box")
-	self.say("I will put it here")
-	self.call_function_from(self, "place_box", [item])
+
+	# Shadow Cole moves hand and add to inventory
+	self.animate_until_finished("raise_hand")
+	self.add_to_inventory(item)
 	self.animate_until_finished("lower_hand")
+
+	self.say("Thanks")
+	#Call red_box.use_item(who, item) so it populates the queue of Shadow Cole
+	$"../Red Box".use_item(self, item)
 	self.emit_message("box_placed")
-	
-	who.wait_on_player(self, "box_placed")
+
+	# Cole waits and says thank you
+	who.wait_on_character(self, "box_placed")
 	who.say("That's it, now you can check the code!")
 	who.say("Thanks for being interested in our work")
-	who.say("We are sure you will make awesome games!")
+	who.emit_message("finished_talking")
 
+	# Shadow Cole waits says thank you
+	self.wait_on_character(who, "finished_talking")
+	self.say("We are sure you will make awesome games!")
 
-func place_box(box):
-	# Function called after Cole raises the hand
-	var red_box = $"../Red Box"
-	box.transform.origin = red_box.transform.origin + Vector3(0, 2, 0)
-	box.visible = true
-	
-	red_box.interactive = false
-	
+#func use_item(who, item):
+#	$"../PointClick".play_scene('res://cutscenes/Outro.txt', {"item":item})

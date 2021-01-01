@@ -1,6 +1,13 @@
-cole say: Another box appeared!
-cole say: Let me put it on the top for you
+cole walk_to: shadow_cole
 
-cole take: green_box
-cole walk_to: red_box
-cole use_item: green_box red_box
+if: item != green_box
+	shadow_cole say: No, please give me the Green Box
+else:
+	cole give: green_box shadow_cole
+	shadow_cole say: Thanks
+	shadow_cole use_item: green_box red_box
+
+	cole say: That's it, now you can check the code!
+	cole say: Thanks for being interested in our work
+	shadow_cole say: We are sure you will make awesome games!
+	

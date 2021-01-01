@@ -29,4 +29,17 @@ func grab():
 
 func use_item(who, item):
 	# Function executed when <WHO> uses <ITEM> on THIS RED BOX
-	who.say("I need to give the box to Shadow Cole")
+	if who == $'../Cole':
+		who.say("I need to give the box to Shadow Cole")
+	else:
+		who.approach(self)
+		who.animate_until_finished("raise_hand")
+		who.call_function_from(self, "place_box", [item])
+		who.remove_from_inventory(item)
+		who.animate_until_finished("lower_hand")
+
+func place_box(box):
+	box.transform.origin = self.transform.origin + Vector3(0, 2, 0)
+	box.visible = true
+	
+	self.interactive = false

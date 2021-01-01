@@ -12,7 +12,7 @@ func _ready():
 	$Cole.navigation = $Navigation
 	$Cole.camera = $Camera
 
-	$"Shadow Cole".navigation = $Navigation	
+	$"Shadow Cole".navigation = $Navigation
 	$"Shadow Cole".camera = $Camera
 
 	# We need to initialize our point and click system letting it know:
