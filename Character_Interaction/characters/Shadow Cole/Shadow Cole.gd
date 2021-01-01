@@ -61,4 +61,4 @@ func use_item(who, item):
 	self.say("We are sure you will make awesome games!")
 
 #func use_item(who, item):
-#	$"../PointClick".play_scene('res://cutscenes/Outro.txt', {"item":item})
+#	$"../PointClick".play_scene('res://cutscenes/ShadowBox.txt', {"item":item})
