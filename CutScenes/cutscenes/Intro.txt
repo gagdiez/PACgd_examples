@@ -1,7 +1,6 @@
 cole say: Hi, welcome to this example on how to use our plugin
 
 cole set: name Cole
-cole call: test_function 1 2 {cole.name}
 
 if: cole.name == "Cole"
 	cole say: My name is {cole.name}
