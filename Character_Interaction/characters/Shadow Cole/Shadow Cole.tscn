@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://characters/Shadow Cole/Shadow Cole.gd" type="Script" id=1]
 [ext_resource path="res://characters/Shadow Cole/spritesheet.png" type="Texture" id=2]
@@ -18,7 +18,7 @@ tracks/0/keys = {
 "values": [ 8 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "lower_hand"
 length = 0.375
 step = 0.125
@@ -35,7 +35,7 @@ tracks/0/keys = {
 "values": [ 10, 9, 8 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "raise_hand"
 length = 0.25
 step = 0.125
@@ -52,8 +52,7 @@ tracks/0/keys = {
 "values": [ 9, 10, 11 ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "take"
+[sub_resource type="Animation" id=4]
 length = 0.1
 step = 0.125
 tracks/0/type = "value"
@@ -85,14 +84,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
 }
 
-[sub_resource type="SpatialMaterial" id=6]
-flags_transparent = true
-flags_vertex_lighting = true
-flags_albedo_tex_force_srgb = true
-params_cull_mode = 2
-params_depth_draw_mode = 3
-
-[sub_resource type="BoxShape" id=7]
+[sub_resource type="BoxShape" id=6]
 extents = Vector3( 1.08514, 4.33591, 0.0757634 )
 
 [node name="Shadow Cole" type="KinematicBody"]
@@ -117,20 +109,19 @@ one_shot = true
 [node name="Animations" type="AnimationPlayer" parent="."]
 autoplay = "idle"
 anims/idle = SubResource( 1 )
-anims/lower_hand = SubResource( 3 )
-anims/raise_hand = SubResource( 4 )
-anims/take = SubResource( 2 )
+anims/lower_hand = SubResource( 2 )
+anims/raise_hand = SubResource( 3 )
+anims/take = SubResource( 4 )
 anims/walk = SubResource( 5 )
 
 [node name="Sprite" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.39771, 0.0795898 )
-material_override = SubResource( 6 )
 use_in_baked_light = true
 texture = ExtResource( 2 )
-vframes = 2
 hframes = 8
+vframes = 2
 frame = 8
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.41086, 0 )
-shape = SubResource( 7 )
+shape = SubResource( 6 )
