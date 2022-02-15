@@ -27,4 +27,4 @@ func _ready():
 	$PointClick.init($Cole, name_to_object)
 	
 	# When the game starts, we play the intro CutScene
-	#$PointClick.play_scene("res://cutscenes/Intro.txt")
+	$PointClick.play_scene("res://cutscenes/Intro.txt")

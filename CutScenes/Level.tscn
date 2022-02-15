@@ -90,6 +90,7 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Green Box"]
 shape = SubResource( 8 )
+disabled = true
 
 [node name="MeshInstance" type="MeshInstance" parent="Green Box"]
 mesh = SubResource( 10 )

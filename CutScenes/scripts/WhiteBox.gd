@@ -35,6 +35,7 @@ func place_box(box):
 	# The GREEN box appears!
 	$"../Green Box".visible = true
 	$"../Green Box".interactive = true
+	$"../Green Box/CollisionShape".disabled = false
 	
 	# The WHITE box is not interactive anymore
 	self.interactive = false

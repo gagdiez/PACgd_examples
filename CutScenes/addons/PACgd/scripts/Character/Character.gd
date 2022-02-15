@@ -5,51 +5,39 @@ class_name Character
 const STATES = preload("States.gd")
 var queue = preload("Queue.gd").Queue.new()
 
-# They know where the camera is, where they can walk, and their inventory
+# They know where the camera is, where they can walk
 var camera
-var inventory
 var navigation
 
+# They have an inventory
+var inventory = Inventory.new()
+
 # Their NODE has an animation player, a sprite, and a talk bubble
-var animation_player
-var talk_bubble
-var talk_bubble_timer
-var talk_bubble_offset
-var sprite
+onready var animation_player = $Animations
+onready var talk_bubble = $TalkBubble
+onready var sprite = $Sprite
+
+# 3D characters have an offset for their bubble that helps to position it in the scene
+var talk_bubble_offset = Vector3(0, 0, 0)
 
 # They have a speed, and they don't move if the destination is close
 var SPEED = 5
-var MINIMUM_WALKABLE_DISTANCE = 0.5
+var MINIMUM_WALKABLE_DISTANCE = .5
 
 # They can signal after finising actions
 signal player_finished
 signal message(signal_name)
 
-var doing = false
-
-# Godot functions
+# If you click on them you will talk to them
 func _ready():
 	main_action = ACTIONS.talk_to
-	inventory = Inventory.new()
+	secondary_action = ACTIONS.examine
 
-	# For a player, we need to indicate its "Animation Player"
-	animation_player = $Animations
 
-	# Its talk bubble
-	talk_bubble = $"Talk Bubble"
-	talk_bubble.visible = false
-
-	talk_bubble_timer = $"Talk Bubble/Timer"
-
-	# And where to place it
-	talk_bubble_offset = Vector3(-.6, 9.5, 0)
-
+# GODOT Function
+# We constantly check if it has an action to run
+var doing = false  # -> for emiting a signal after finishing an action
 func _physics_process(_delta):
-	# Move player's bubble above they head
-	talk_bubble.rect_position = camera.unproject_position(
-		transform.origin + talk_bubble_offset
-	)
-
 	# Process the queue
 	var current_action = queue.current()
 
@@ -60,15 +48,16 @@ func _physics_process(_delta):
 		doing = false
 		emit_signal("player_finished")
 
+
 # Internal Functions
 func face_direction(direction):
 	var my_pos = camera.unproject_position(transform.origin)
 	var dir = camera.unproject_position(transform.origin + direction)
 	
 	if dir.x < my_pos.x:
-		$Sprite.scale.x = -1
+		sprite.scale.x = -abs(sprite.scale.x)
 	else:
-		$Sprite.scale.x = 1
+		sprite.scale.x = abs(sprite.scale.x)
 
 func interrupt():
 	if queue.clear():
@@ -76,6 +65,15 @@ func interrupt():
 
 func play_animation(animation):
 	animation_player.play(animation)
+
+func say_now(text):
+	talk_bubble.set_text(text)
+	talk_bubble.visible = true
+
+func quiet():
+	talk_bubble.visible = false
+	talk_bubble.set_text("")
+
 
 # Functions to populate the queue in response to clicks in objects
 func add_to_inventory(object):
@@ -109,13 +107,17 @@ func face_object(object):
 func remove_from_inventory(object):
 	queue.append(STATES.RemoveFromInventory.new(self, object))
 
-func say(text):
-	queue.append(STATES.Say.new(self, text, talk_bubble, talk_bubble_timer))
+func say(text, how_long=2):
+	queue.append(STATES.Say.new(self, text, how_long))
 
 func wait_on_character(who:Character, message:String):
 	queue.append(STATES.WaitOnCharacter.new(self, who, message))
 
 func approach(object):
+	assert(navigation != null, "You forgot to set the navigation of " + oname)
+
+	if not object.interaction_position: return
+
 	var end = navigation.get_closest_point(object.interaction_position)
 
 	if (end - transform.origin).length() > MINIMUM_WALKABLE_DISTANCE:
@@ -130,8 +132,8 @@ func approach(object):
 	else:
 		queue.append(STATES.State.new()) # queue nothing to keep signals working
 
-# Default answers to actions
 
+# Default answers to actions
 func receive_item(who, item):
 	# Remove item
 	who.animate_until_finished("raise_hand")

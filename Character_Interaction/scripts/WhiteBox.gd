@@ -18,9 +18,6 @@ func use_item(who, item):
 	who.call_function_from(self, "place_box", [item])
 	who.animate_until_finished("lower_hand")
 	who.say("Wow, a floating box appeared!")
-	
-	# Uncomment the next line to make Cole automatically pile the GREEN box
-	# who.call_function_from(self, "play_outro")
 
 func place_box(box):
 	# Place the box on top of the WHITE one
@@ -35,10 +32,7 @@ func place_box(box):
 	# The GREEN box appears!
 	$"../Green Box".visible = true
 	$"../Green Box".interactive = true
+	$"../Green Box/CollisionShape".disabled = false
 	
 	# The WHITE box is not interactive anymore
 	self.interactive = false
-
-func play_outro():
-	# The OUTRO showcases our CutScene system
-	$"../PointClick".play_scene("res://cutscenes/Outro.txt")

@@ -1,0 +1,34 @@
+cole say: Hi, welcome to this example on how to use our plugin
+
+cole set: name Cole
+
+if: cole.name == "Cole"
+	cole say: My name is {cole.name}
+else:
+	cole say: My name is {cole.name}, somebody changed my name!
+
+cole walk_to: white_box
+
+cole say: Do you have any questions?
+
+choice: Do you have any questions?
+	option: How can I learn more about the framework? 
+		cole say: Check the documentation!
+		cole say: Also, did you know that you can make multiple choices?
+		
+		choice: Did you know?
+			option: I did not
+				cole say: Really?
+			option: I changed your name	if: cole.name != "Cole"
+				cole say: I see you did
+			option: I knew it!
+				cole say: Perfect
+				finish
+
+	option: What am I supposed to do here? if: cole.name == "Cole"
+		cole say: Interact with the boxes, put the red on top of the white one
+		cole say: Any other question?
+	option: No, thanks!
+		cole say: Perfect! Now you can play
+		cole say: Don't forget to check the code later
+		finish

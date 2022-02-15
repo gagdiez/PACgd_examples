@@ -3,17 +3,21 @@ extends Character
 var placed_box
 
 func _ready():
-	._ready()
+	SPEED = 5
+	MINIMUM_WALKABLE_DISTANCE = 0.5
+	talk_bubble_offset = Vector3(0, 9.7, 0)
 
-	# By default the main_action of a Character is "ACTIONS.talk_to"
+	main_action = ACTIONS.talk_to
+
 	description = "It is me, but in black and white... lazy developers"
 	interaction_position = self.transform.origin - Vector3(5, 0, 0)
 	
 	# Make it look at Shadow Cole
 	face_object($'../Cole')
 
+
+# Function executed when we click on Shadow Cole
 func talk_to(who):
-	# Called when main_action is invoqued by the click
 	self.wait_on_character(who, "arrived")
 	self.face_object(who)
 	self.say("Hi " + who.name)
@@ -35,15 +39,7 @@ func use_item(who, item):
 		self.say("No, please give me the green box")
 		return
 
-	# Cole moves hand and remove from inventory
-	who.animate_until_finished("raise_hand")
-	who.remove_from_inventory(item)
-	who.animate_until_finished("lower_hand")
-
-	# Shadow Cole moves hand and add to inventory
-	self.animate_until_finished("raise_hand")
-	self.add_to_inventory(item)
-	self.animate_until_finished("lower_hand")
+	self.receive_item(who, item)
 
 	self.say("Thanks")
 	$"../Red Box".use_item(self, item) #-> it populates the queue of Shadow Cole
