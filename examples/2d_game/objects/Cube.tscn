@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://examples/2d_game/assets/cube.png" id="1"]
+
+[sub_resource type="RectangleShape2D" id="4"]
+size = Vector2(20, 20)
+
+[node name="Cube" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("4")
+
+[node name="TextureRect" type="TextureRect" parent="CollisionShape2D"]
+offset_left = -13.0
+offset_top = -13.0
+offset_right = 13.0
+offset_bottom = 13.0
+mouse_filter = 2
+texture = ExtResource("1")
+expand_mode = 1

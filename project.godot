@@ -1,0 +1,35 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="PACgd Examples"
+run/main_scene="res://Menu.tscn"
+config/features=PackedStringArray("4.7")
+config/icon="res://icon.png"
+
+[autoload]
+
+PAC="*res://addons/PACgd/core/pac.gd"
+
+[display]
+
+window/size/viewport_width=1024
+window/size/viewport_height=600
+mouse_cursor/custom_image="res://addons/PACgd/cursor.png"
+mouse_cursor/custom_image_hotspot=Vector2(5, 5)
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/PACgd/plugin.cfg")
+
+[rendering]
+
+environment/defaults/default_environment="res://default_env.tres"
