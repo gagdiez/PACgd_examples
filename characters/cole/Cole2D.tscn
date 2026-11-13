@@ -1,0 +1,103 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://characters/cole/Cole2D.gd" id="character"]
+[ext_resource type="Texture2D" path="res://characters/cole/spritesheet.png" id="1"]
+
+[sub_resource type="Animation" id="1"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+
+[sub_resource type="Animation" id="2"]
+resource_name = "lower_hand"
+length = 0.375
+step = 0.125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [10, 9, 8]
+}
+
+[sub_resource type="Animation" id="3"]
+resource_name = "raise_hand"
+length = 0.25
+step = 0.125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [9, 10, 11]
+}
+
+[sub_resource type="Animation" id="4"]
+loop_mode = 1
+step = 0.125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2tvof"]
+_data = {
+&"idle": SubResource("1"),
+&"lower_hand": SubResource("2"),
+&"raise_hand": SubResource("3"),
+&"walk": SubResource("4")
+}
+
+[sub_resource type="RectangleShape2D" id="5"]
+size = Vector2(67, 264)
+
+[node name="Cole2D" type="CharacterBody2D" unique_id=511795029]
+motion_mode = 1
+script = ExtResource("character")
+
+[node name="Animations" type="AnimationPlayer" parent="." unique_id=1561132351]
+libraries/ = SubResource("AnimationLibrary_2tvof")
+autoplay = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1672562021]
+position = Vector2(3.5, -133)
+shape = SubResource("5")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1488376039]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1")
+offset = Vector2(0, -450)
+hframes = 8
+vframes = 2
+frame = 8
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1635979003]
+

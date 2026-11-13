@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://characters/cole/Cole2D.tscn" id="cole"]
+[ext_resource type="Texture2D" path="res://examples/2d_game/assets/background.png" id="background"]
+[ext_resource type="PackedScene" path="res://examples/2d_game/objects/Cube.tscn" id="cube"]
+[ext_resource type="Script" path="res://examples/2d_game/scripts/InteractiveShelf.gd" id="shelf"]
+[ext_resource type="Script" path="res://examples/2d_game/scripts/Cube.gd" id="cube_script"]
+[ext_resource type="PackedScene" path="res://examples/BackToMenu.tscn" id="menu"]
+
+[sub_resource type="RectangleShape2D" id="shelf_shape"]
+size = Vector2(232.486, 23.7576)
+
+[sub_resource type="NavigationPolygon" id="walkable"]
+vertices = PackedVector2Array(996, 402, 1078, 447, 5, 447, 82, 402)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(82, 402, 5, 447, 1078, 447, 996, 402)])
+
+[node name="Level" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(540, 224)
+zoom = Vector2(0.948, 0.948)
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1080.0
+offset_bottom = 448.0
+mouse_filter = 2
+texture = ExtResource("background")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("walkable")
+
+[node name="Shelf" type="Area2D" parent="." node_paths=PackedStringArray("interaction_point")]
+position = Vector2(851, 269)
+scale = Vector2(0.589285, 0.589285)
+script = ExtResource("shelf")
+interaction_point = NodePath("InteractionPoint")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shelf"]
+position = Vector2(4.24231, -10.1818)
+shape = SubResource("shelf_shape")
+
+[node name="InteractionPoint" type="Marker2D" parent="Shelf"]
+position = Vector2(-17, 0)
+
+[node name="Cube" parent="." node_paths=PackedStringArray("interaction_point") instance=ExtResource("cube")]
+position = Vector2(223, 244)
+script = ExtResource("cube_script")
+interaction_point = NodePath("InteractionPoint")
+
+[node name="InteractionPoint" type="Marker2D" parent="Cube"]
+position = Vector2(33, 0)
+
+[node name="Cole" parent="." instance=ExtResource("cole")]
+z_index = 1
+position = Vector2(403, 414)
+
+[node name="BackToMenu" parent="." instance=ExtResource("menu")]
